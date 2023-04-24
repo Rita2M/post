@@ -1,7 +1,7 @@
 
 data class Post(
     val id: Int = 0, // идентификатор записи
-    val text: String, // текст записи
+    val text: String ?, // текст записи
     val date: Int = 600, // время публикации записи
     val fromId: Int = 123987, // идентификатор автора записи(от чбего имени запись)
     val canPin: Boolean = false, // может ли текущий пользователь закрепить запись да/нет
