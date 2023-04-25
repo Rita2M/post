@@ -1,8 +1,8 @@
 fun main() {
 
-    val original = Post(text = "lol", Likes = Likes(6))
+    val original = Post(text = null, Likes = Likes(6))
 
-    val originNew = Post(text = null, Likes = Likes(5))
+    val originNew = Post(text = "yyy", Likes = Likes(5))
 
     val newPost1 = Post(3,"543", Likes = Likes(0))
 
