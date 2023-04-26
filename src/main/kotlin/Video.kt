@@ -4,7 +4,7 @@ data class Video (
     val title: String ="myVideo",
     val duration: Int =6
 )
-class VideoAttachment( video: Video) : Attachment {
+class VideoAttachment(val video: Video) : Attachment {
     override val type: String = "video"
 
 }

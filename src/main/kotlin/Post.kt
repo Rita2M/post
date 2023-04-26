@@ -7,14 +7,30 @@ data class Post(
     val markedAsAds: Boolean = true, // содержит ли запись рекламу да/нет
     val ownerId: Int = 23416, //идентификатор вледельца стены
     val canEdit: Boolean = true, // может ли текущий пользователь редактировать запись
-    val attachmentArray: Array<Attachment> = arrayOf(
+    val createdBy: Int = 123, //идентификатор админа опубликовавшего запись
+    val replyOwnerId: Int = 321, //id владельца запись в ответ на которую оставлена текущая
+    val replyPostId: Int = 567, //id зарписи в ответ на которую была оставлена текущая
+    val friendsOnly: Int = 1, //если запись с опцией "только друзья"
+    val postType: String = "post", //тип поста
+    val signerId: Int = 432, //id поста если запись опубл. от имени сообщества
+    val isPinned: Int = 1, // 1 если запись закреплена
+    val isFavorite: Boolean = true, //добавлен ли объект в закладки у текущего польз.
+    val postponedId: Int = 0, //id отложенной змпись, возвращ.если стояла на таймере
+    val attachments: Array<Attachment> = arrayOf(
         PhotoAttachment(photo = Photo()),
         VideoAttachment(video = Video()),
         AudioAttachment(audio = Audio(1)),
         StickerAttachment(sticker = Sticker()),
         DocAttachment(doc = Doc())
     ),
-    var likes: Likes
+    val copyHistory: Array<Reposts> = emptyArray(),
+    var likes: Likes,
+    var comments: Comments,
+    val copyright: Copyright,
+    var reposts: Reposts,
+    var views: Views,
+    val geo: Geo,
+    val donut: Donut
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -24,14 +40,53 @@ data class Post(
 
         if (text != other.text) return false
         if (date != other.date) return false
-        if (!attachmentArray.contentEquals(other.attachmentArray)) return false
+        if (!attachments.contentEquals(other.attachments)) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return attachmentArray.contentHashCode()
+        return attachments.contentHashCode()
     }
 }
 
-data class Likes(val count: Int = 0)
+data class Likes(
+    val count: Int = 0,
+    val userLikes: Boolean = true,// наличие отметки "мне нравится" от текущего пользователя
+    val canLike: Boolean = true,// может ли текущ. пользователь лайкнуть
+    val canPublish: Boolean = true// может ли сделать репост
+)
+
+data class Comments(
+    val count: Int = 0, // количество комментов
+    val canPost: Boolean = true, //может ли текущай польз.коментить запись
+    val groupsCanPost: Boolean = true, // могут ли сообщества коментить
+    val canClose: Boolean = false, // может ли текущий пользователь закрыть комменты
+    val canOpen: Boolean = true // -||-    открыть коменты
+)
+
+data class Copyright(
+    val id: Int = 0,
+    val link: String = "ссылка",
+    val name: String = "имя",
+    val type: String = "тип"
+)
+
+data class Reposts(val count: Int = 0, val userReposted: Boolean = true)
+data class Views(val count: Int = 0) //просмотры записи
+
+//data class PostSource()
+data class Geo(
+    val type: String = "джунгли", //тип места
+    val coordinates: String = "2313.221",
+    val place: String = "Красивое" //описание места
+)
+
+data class Donut(
+    val isDonut: Boolean = false,//запись доступна только платным подписчикам
+    val paidDuration: Int = 12, //время доступа по плюподписке
+    val Placeholder: String = "class", //заглушка для пользователей без подписки(класс)
+    val canPublishFreeCopy: Boolean = true,//можно ли открыть запись для всех
+    val edit_mode: String = "all" //информ. о том какие значения можно изменить
+)
+

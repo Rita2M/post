@@ -5,7 +5,7 @@ data class Audio(
     val title: String = "relaxesFm",
     val length: Int = 3
 )
-class AudioAttachment(audio: Audio) : Attachment {
+class AudioAttachment(val audio: Audio) : Attachment {
     override val type: String
         get() = "Audio"
 }
