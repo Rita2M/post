@@ -10,6 +10,8 @@ data class Comment (
     val thread: Thread,
     //val parentsStack:  TODO массив id родительских комментариев
 ) {
+
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

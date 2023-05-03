@@ -43,5 +43,19 @@ class WallServiceTest {
         val result = post.id
         assertNotEquals(result,0)
     }
-    
+    @Test(expected = PostNotFoundException::class)
+    fun shouldThrow() {
+        WallService.add(Post(0,"yy", likes = Likes(9), comments = Comments(), donut = Donut(),
+            copyright = Copyright(), reposts = Reposts(), views = Views(), geo = Geo()))
+        WallService.createComment(2,Comment(donut = Donut(), thread = Thread()))
+    }
+    @Test
+    fun createCommentGoodTest() {
+        val postNew = WallService.add(Post(0,"yy", likes = Likes(9), comments = Comments(), donut = Donut(),
+            copyright = Copyright(), reposts = Reposts(), views = Views(), geo = Geo()))
+        val postId = 1
+        WallService.createComment(postId,Comment(donut = Donut(), thread = Thread()))
+        assertEquals(postNew.id,postId)
+    }
+
 }
