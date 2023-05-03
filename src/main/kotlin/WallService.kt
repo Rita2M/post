@@ -1,7 +1,20 @@
+import java.lang.RuntimeException
 
 object WallService {
     private var posts = emptyArray<Post>()
+    private var comments = emptyArray<Comment>()
     private var lastId =0
+
+    fun createComment(postId: Int, comment: Comment): Comment {
+        for ( post  in posts){
+            if (post.id == postId) {
+                comments += comment.copy(donut = comment.donut.copy(), thread = comment.thread.copy())
+                return comments.last()
+            }
+        }
+         throw PostNotFoundException("нет такого поста, комментарий не добавлен")
+
+    }
     fun clear() {
         posts = emptyArray()
         lastId = 0
@@ -21,8 +34,5 @@ object WallService {
        }
         return false
     }
-
-
-
-
 }
+class PostNotFoundException(massage: String): RuntimeException(massage)

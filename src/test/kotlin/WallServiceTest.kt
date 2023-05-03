@@ -26,7 +26,7 @@ class WallServiceTest {
     fun updateNotExisting() {
         val service = WallService
         service.add(Post(0, "tt", likes = Likes(9), comments = Comments(), donut = Donut(),
-        copyright = Copyright(), views = Views(), reposts = Reposts(), geo = Geo()))
+        copyright = Copyright(), views = Views() , reposts = Reposts(), geo = Geo()))
         service.add(Post(0, "dd", likes = Likes(4), comments = Comments(), donut = Donut(),
         copyright = Copyright(), reposts = Reposts(), views = Views(), geo = Geo()))
         val update = Post(10, "gg", likes = Likes(7), comments = Comments(), donut = Donut(),
@@ -43,4 +43,5 @@ class WallServiceTest {
         val result = post.id
         assertNotEquals(result,0)
     }
+    
 }
