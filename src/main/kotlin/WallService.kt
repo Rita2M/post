@@ -2,7 +2,7 @@ import java.lang.RuntimeException
 
 object WallService {
     private var posts = emptyArray<Post>()
-    private var comments = emptyArray<Comment>()
+    private var comments = mutableListOf<Comment>()
     private var lastId =0
 
     fun createComment(postId: Int, comment: Comment): Comment {
@@ -17,7 +17,7 @@ object WallService {
     }
     fun clear() {
         posts = emptyArray()
-        comments = emptyArray()
+        comments = mutableListOf()
         lastId = 0
     }
 

@@ -1,6 +1,6 @@
 data class Post(
     val id: Int = 0, // идентификатор записи
-    val text: String?, // текст записи
+    val text: String? = null, // текст записи
     val date: Int = 600, // время публикации записи
     val fromId: Int = 123987, // идентификатор автора записи(от чбего имени запись)
     val canPin: Boolean = false, // может ли текущий пользователь закрепить запись да/нет
@@ -16,39 +16,24 @@ data class Post(
     val isPinned: Int = 1, // 1 если запись закреплена
     val isFavorite: Boolean = true, //добавлен ли объект в закладки у текущего польз.
     val postponedId: Int = 0, //id отложенной змпись, возвращ.если стояла на таймере
-    val attachments: Array<Attachment> = arrayOf(
+    val attachments: List<Attachment> = listOf(
         PhotoAttachment(photo = Photo()),
         VideoAttachment(video = Video()),
         AudioAttachment(audio = Audio(1)),
         StickerAttachment(sticker = Sticker()),
         DocAttachment(doc = Doc())
     ),
-    val copyHistory: Array<Reposts> = emptyArray(),
+    val copyHistory: List<Reposts> = listOf(),
     var likes: Likes,
     var comments: Comments,
     val copyright: Copyright,
     var reposts: Reposts,
     var views: Views,
     val geo: Geo,
-    val donut: Donut
-) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+    val donut: Donut,
 
-        other as Post
+    )
 
-        if (text != other.text) return false
-        if (date != other.date) return false
-        if (!attachments.contentEquals(other.attachments)) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        return attachments.contentHashCode()
-    }
-}
 
 data class Likes(
     val count: Int = 0,

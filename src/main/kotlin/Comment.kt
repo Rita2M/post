@@ -1,32 +1,21 @@
 data class Comment (
-    val id: Int = 0,//id комментария
+    var id: Int = 0,//id комментария
     val fromId: Int = 0, // id автора комментария
     val date: Int = 12, // дата создания комментария
-    val text: String = "good", // текст комментария
+    var text: String = "good", // текст комментария
     val replyToUser: Int = 12, // id пользователя или сообщества в ответ которому оставили коммент
     val replyToComment: Int = 123, // id коментария в ответ на который оставлен текущий коммент
-    val donut: Donut,
-    val attachments: Array<Attachment> = arrayOf(PhotoAttachment(photo = Photo(id = 5))),
+    val donut : Donut,
+    val attachments: List<Attachment> = listOf<Attachment>(PhotoAttachment(photo = Photo(id = 5))),
+    //вложения в комент
     val thread: Thread,
+    var deleted: Boolean = false
     //val parentsStack:  TODO массив id родительских комментариев
-) {
+)
 
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
 
-        other as Comment
 
-        if (!attachments.contentEquals(other.attachments)) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        return attachments.contentHashCode()
-    }
-}
 data class Thread( //информ.о вложенной ветке с полями
     val count: Int = 0,
     val items: Int = 0, //массив объектов комментариев к записи TODO
