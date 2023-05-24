@@ -1,3 +1,7 @@
+import chat.service.ChatNotFoundException
+import chat.service.ChatService
+import chat.service.Message
+import chat.service.MessageNotFoundException
 import note.server.Note
 import org.junit.Assert.*
 import org.junit.Before
@@ -8,6 +12,7 @@ class WallServiceTest {
     fun clearBeforeTest() {
         WallService.clear()
         NoteService.clear()
+        ChatService.clear()
     }
 
     @Test
@@ -232,6 +237,104 @@ class WallServiceTest {
         NoteService.restoreComment(2)
         val result = tt.comments.lastOrNull()!!.deleted
         assertFalse(result)
+    }
+    @Test
+    fun addMessageTest(){
+        ChatService.addMessage(1, message = Message("ttt"))
+        val result = ChatService.getChats().size
+        assertEquals(1, result)
+    }
+    @Test
+    fun getUnreadChatsCountTest(){
+        ChatService.addMessage(1, message = Message("ttt"))
+        ChatService.addMessage(2, message = Message("ttt"))
+        val tf = ChatService.getUnreadChatsCount()
+        assertEquals(tf, 2)
+    }
+    @Test
+    fun getLastMessageTest(){
+        val message1 = Message("hi")
+        ChatService.addMessage(1, message = Message("rrr"))
+        ChatService.addMessage(1, message1)
+        val lastMessage = ChatService.getLastMessage()
+        val result =  lastMessage.size
+        assertEquals(result, 1)
+        assertEquals(lastMessage[0],message1 )
+    }
+    @Test
+    fun getMessagesTest(){
+        val message1 = Message("привет")
+        val message2 = Message("мир")
+        val message3 = Message("земляне")
+        ChatService.addMessage(1, message1)
+        ChatService.addMessage(1, message2)
+        ChatService.addMessage(1, message3)
+        val messages = ChatService.getMessages(1,2)
+
+        assertEquals(message2,messages[0])
+        assertEquals(message3,messages[1])
+        assertEquals(messages.size, 2)
+        assertTrue(messages.all { it.read })
+    }
+    @Test(expected = ChatNotFoundException::class)
+    fun getMessagesThrow(){
+        ChatService.getMessages(1,1)
+    }
+    @Test
+    fun deleteMessageTest(){
+        val message1 = Message("привет")
+        val message2 = Message("мир")
+        val message3 = Message("земляне")
+        ChatService.addMessage(1, message1)
+        ChatService.addMessage(1, message2)
+        ChatService.addMessage(1, message3)
+        ChatService.deleteMessage(1,1)
+        val chat = ChatService.getMessages(1,2)
+        assertEquals(chat[0],message1)
+        assertEquals(chat[1],message3)
+    }
+    @Test(expected = MessageNotFoundException::class)
+    fun deleteMessageThrow(){
+        ChatService.deleteMessage(1,0)
+    }
+    @Test
+    fun deleteChat(){
+        ChatService.addMessage(1, message = Message("rrr"))
+        ChatService.addMessage(1, message = Message("hello"))
+        ChatService.deleteChat(1)
+        val result = ChatService.getChats()
+        assertEquals(result.size, 0)
+    }
+    @Test
+    fun getChatTest(){
+        ChatService.addMessage(1, message = Message("rrr"))
+        val result = ChatService.getChat(2)
+        //val result2 = ChatService.getChat(1)
+        //val yy = ChatService.getChats()
+        assertEquals("нет такого чата",result)
+
+    }
+    @Test
+    fun getChatsTest(){
+        val message1 = Message("привет")
+        ChatService.addMessage(1, message1)
+        val tt = ChatService.getChats()
+        assertNotNull(tt[1])
+    }
+    @Test
+    fun editMessageTest(){
+        val message1 = Message("привет")
+        ChatService.addMessage(1, message1)
+        ChatService.editMessage(1,0,"hi")
+        val newText = message1.text
+        val y = ChatService.getChats()
+        val rrr = y[1]!!.messages.getOrNull(0)?.text
+        assertEquals(newText,rrr)
+
+    }
+    @Test(expected = MessageNotFoundException::class)
+    fun editMessageThrow(){
+        ChatService.editMessage(1,2,"yh")
     }
 
 }

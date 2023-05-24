@@ -1,3 +1,5 @@
+import chat.service.ChatService
+import chat.service.Message
 import note.server.Note
 
 fun main() {
@@ -17,13 +19,23 @@ fun main() {
     println(WallService.update(newPost1))
     println(WallService.createComment(2, Comment(donut = Donut(), thread = Thread())))
     println(NoteService.add(Note(text = "первая добавл. заметка")))
-    println(NoteService.createComment(1, comment = Comment(text = "новый коментарий", donut = Donut(), thread = Thread())))
+    println(NoteService.createComment(1, Comment(text = "новый коментарий", donut = Donut(), thread = Thread())))
     val newNote = Note()
     val newNote2 = Note()
     println(NoteService.add(newNote))
     println(NoteService.add(newNote2))
     println(NoteService.getById(1))
     NoteService.restoreComment(4)
+
+    ChatService.addMessage(1, Message("hi")) //0
+    ChatService.addMessage(1, Message("555")) // 1
+    ChatService.addMessage(1, Message("трунь")) // 2
+    ChatService.addMessage(4, Message("i"))
+    println( ChatService.getChat(13))
+    ChatService.editMessage(1,1,"изменённый текст")
+    println(ChatService.getChats())
+
+
 
 
 
